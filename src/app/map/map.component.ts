@@ -78,5 +78,43 @@ export class MapComponent implements OnInit {
       directions.setOrigin([pos.coords.longitude, pos.coords.latitude]);
     }
     geolocate.on('geolocate', success);
+
+    // Add source and layers
+    this.map.on('load', () => {
+      this.map.addSource('demoSource', {
+        type: 'geojson',
+        data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
+      });
+      this.map.addLayer({
+        'id': 'demoLayer',
+        'source': 'demoSource',
+        'type': 'circle',
+        'paint': {
+          'circle-radius': 8,
+          'circle-stroke-width': 2,
+          'circle-color': 'red',
+          'circle-stroke-color': 'white'
+        }
+      });
+    });
+
+    // Toggle data layer visiblity
+    var link = document.createElement('button');
+    link.className = 'active';
+    link.textContent = 'Toggle';
+
+    link.onclick = () => {
+      var visibility = this.map.getLayoutProperty('demoLayer', 'visibility');
+
+      if (visibility === 'visible') {
+        this.map.setLayoutProperty('demoLayer', 'visibility', 'none');
+        link.className = '';
+      } else {
+        link.className = 'active';
+        this.map.setLayoutProperty('demoLayer', 'visibility', 'visible');
+      };
+    };
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
   }
 }
