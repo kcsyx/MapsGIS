@@ -1,0 +1,4 @@
+<div>
+  <input type='file' (change)="fileChanged($event)">
+</div>
+<button [disabled]="!fileExists" type="button" class="btn btn-primary" (click)="uploadDocument(this.file)">Upload File</button>
