@@ -101,7 +101,7 @@ export class MapComponent implements OnInit {
     // Toggle data layer visiblity
     var link = document.createElement('button');
     link.className = 'active';
-    link.textContent = 'Toggle';
+    link.textContent = 'Toggle demoLayer';
 
     link.onclick = () => {
       var visibility = this.map.getLayoutProperty('demoLayer', 'visibility');
