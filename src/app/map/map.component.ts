@@ -3,7 +3,6 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
-import { GeoJson, FeatureCollection } from '../map';
 
 @Component({
   selector: 'app-map',
