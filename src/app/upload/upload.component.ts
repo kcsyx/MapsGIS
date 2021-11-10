@@ -18,19 +18,19 @@ export class UploadComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // saveGeoJson() {
-  //   this.geoJsonService.create(this.file).then(() => {
-  //     console.log('Posted new GeoJson object successfully!');
-  //   });
-  // }
+  saveGeoJson(uploadedFile) {
+    this.geoJsonService.create(uploadedFile).then(() => {
+      console.log('Posted new GeoJson object successfully!');
+    });
+  }
 
   fileChanged(e) {
     this.file = e.target.files[0];
-    console.log(this.file)
+    console.log(this.file);
     //CHECK IF FILE IS JSON
     if (this.file.type == "application/json") {
       this.fileExists = 1;
-    } else if (this.file.name.substr(this.file.name.length - 3) == "shp") {
+    } else if (this.file.name.substr(this.file.name.length - 4) == ".shp") {
       //CONVERT SHP TO JSON, USE DIFFERENT SUBMIT BUTTON TO UPLOAD LOCAL JSON
       this.fileExists = 1;
     } else {
@@ -43,6 +43,8 @@ export class UploadComponent implements OnInit {
     let fileReader = new FileReader();
     fileReader.onload = (e) => {
       console.log(fileReader.result);
+      let jsonObj = (JSON.parse(fileReader.result.toString()));
+      this.saveGeoJson(jsonObj);
     }
     fileReader.readAsText(this.file);
   }
