@@ -5,6 +5,7 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 import { GeojsonService } from '../services/geojson.service';
 import { map } from 'rxjs/operators';
+import { ResourceLoader } from '@angular/compiler';
 
 @Component({
   selector: 'app-map',
@@ -95,30 +96,55 @@ export class MapComponent implements OnInit {
       this.retrievedData.forEach(e => {
         this.toggleableLayerIds.push(e.key);
         console.log(e);
-        //add retrieved data into data source and layer
+        //Turn retrieved data into map Data Source and Layers
 
 
       });
 
-      for (var i = 0; i < this.toggleableLayerIds.length; i++) {
-        var id = this.toggleableLayerIds[i];
-        var link = document.createElement('button');
-        link.className = 'active';
-        link.textContent = id;
-        link.onclick = () => {
-          var clickedLayer = link.textContent;
-          var visibility = this.map.getLayoutProperty(clickedLayer, 'visibility');
-          if (visibility === 'visible') {
-            this.map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-            link.className = '';
-          } else {
-            link.className = 'active';
-            this.map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-          };
-        };
-        var layers = document.getElementById('menu');
-        layers.appendChild(link);
-      };
+      // for (var i = 0; i < this.toggleableLayerIds.length; i++) {
+      //   var id = this.toggleableLayerIds[i];
+      //   var subMenu = document.createElement('div');
+      //   var link = document.createElement('button');
+      //   var deleteButton = document.createElement('button');
+      //   deleteButton.textContent = 'Delete';
+      //   subMenu.className = 'subMenu';
+      //   link.className = 'active';
+      //   link.textContent = id;
+      //   link.onclick = () => {
+      //     var clickedLayer = link.textContent;
+      //     var visibility = this.map.getLayoutProperty(clickedLayer, 'visibility');
+      //     if (visibility === 'visible') {
+      //       this.map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+      //       link.className = '';
+      //     } else {
+      //       link.className = 'active';
+      //       this.map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+      //     };
+      //   };
+      //   var layers = document.getElementById('menu');
+      //   layers.appendChild(subMenu);
+      //   subMenu.append(link);
+      //   subMenu.appendChild(deleteButton);
+      //   deleteButton.onclick = () => {
+      //     console.log("Deleted" + id);
+
+      //   }
+      // };
     });
+  }
+
+  toggleVisibility(key) {
+    var visibility = this.map.getLayoutProperty(key, 'visibility');
+    if (visibility === 'visible') {
+      this.map.setLayoutProperty(key, 'visibility', 'none');
+    } else {
+      this.map.setLayoutProperty(key, 'visibility', 'visible');
+    };
+  }
+
+  deleteData(key) {
+    this.geoJsonService.delete(key).then(() => {
+      console.log('Deleted' + key);
+    }).catch(err => console.log(err));
   }
 }

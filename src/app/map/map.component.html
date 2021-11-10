@@ -1,2 +1,11 @@
-<nav id="menu"></nav>
+<nav id="menu">
+  <div *ngFor="let retrieveData of retrievedData">
+    <button (click)="toggleVisibility(retrieveData.key)">
+      {{ retrieveData.key }}
+    </button>
+    <button (click)="deleteData(retrieveData.key)">
+      Delete
+    </button>
+  </div>
+</nav>
 <div class="map" id="map" class="match-parent"></div>

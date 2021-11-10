@@ -12,7 +12,7 @@ export class UploadComponent implements OnInit {
 
   file: any;
   fileExists = undefined;
-  fileName: string;
+  fileName: string = undefined;
 
   constructor(private geoJsonService: GeojsonService, private http: HttpClient) { }
 
@@ -34,6 +34,9 @@ export class UploadComponent implements OnInit {
     } else if (this.file.name.substr(this.file.name.length - 4) == ".shp") {
       //CONVERT SHP TO GEOJSON, USE DIFFERENT SUBMIT BUTTON TO UPLOAD LOCAL GEOJSON
       this.fileExists = 1;
+
+
+
     } else {
       this.fileExists = undefined;
       alert("Upload only GEOJSON or SHP files");
