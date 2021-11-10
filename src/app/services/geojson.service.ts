@@ -20,7 +20,6 @@ export class GeojsonService {
   }
 
   create(dataName:string, geoJson: GeoJson): any {
-    // return this.geoJsonRef.push(geoJson);
     return this.db.object(this.dbPath+'/'+dataName).set(geoJson);
   }
 
