@@ -3,6 +3,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
+import { GeojsonService } from '../services/geojson.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map',
@@ -19,31 +21,12 @@ export class MapComponent implements OnInit {
   lng = 103.898630;
   // map data
   source: any;
-
-  constructor() { }
+  retrievedData: any;
+  toggleableLayerIds = new Array;
+  constructor(private geoJsonService: GeojsonService) { }
 
   ngOnInit() {
-    this.initialiseMap();
-  }
-
-  private initialiseMap() {
-    // locate the user
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(position => {
-    //     this.lat = position.coords.latitude;
-    //     this.lng = position.coords.longitude;
-    //     this.map.flyTo({
-    //       center: [this.lng, this.lat]
-    //     })
-    //     // Add marker to center of map or user location after geolocating
-    //     const marker = new mapboxgl.Marker()
-    //       .setLngLat([this.lng, this.lat])
-    //       .addTo(this.map);
-    //   });
-    // };
-
     this.buildMap();
-
   }
 
   buildMap() {
@@ -79,41 +62,63 @@ export class MapComponent implements OnInit {
     geolocate.on('geolocate', success);
 
     // Add source and layers
-    this.map.on('load', () => {
-      this.map.addSource('demoSource', {
-        type: 'geojson',
-        data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
+    // this.map.on('load', () => {
+    //   this.map.addSource('demoSource', {
+    //     type: 'geojson',
+    //     data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
+    //   });
+    //   this.map.addLayer({
+    //     'id': 'demoLayer',
+    //     'source': 'demoSource',
+    //     'type': 'circle',
+    //     'paint': {
+    //       'circle-radius': 8,
+    //       'circle-stroke-width': 2,
+    //       'circle-color': 'red',
+    //       'circle-stroke-color': 'white'
+    //     }
+    //   });
+    // });
+    this.retrieveData();
+  }
+
+  // Toggle Data visibility and retrieve data from firebase
+  retrieveData() {
+    this.geoJsonService.getAll().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ key: c.payload.key, ...c.payload.val() })
+        )
+      )
+    ).subscribe(data => {
+      this.retrievedData = data;
+      this.retrievedData.forEach(e => {
+        this.toggleableLayerIds.push(e.key);
+        console.log(e);
+        //add retrieved data into data source and layer
+
+
       });
-      this.map.addLayer({
-        'id': 'demoLayer',
-        'source': 'demoSource',
-        'type': 'circle',
-        'paint': {
-          'circle-radius': 8,
-          'circle-stroke-width': 2,
-          'circle-color': 'red',
-          'circle-stroke-color': 'white'
-        }
-      });
-    });
 
-    // Toggle data layer visiblity
-    var link = document.createElement('button');
-    link.className = 'active';
-    link.textContent = 'Toggle demoLayer';
-
-    link.onclick = () => {
-      var visibility = this.map.getLayoutProperty('demoLayer', 'visibility');
-
-      if (visibility === 'visible') {
-        this.map.setLayoutProperty('demoLayer', 'visibility', 'none');
-        link.className = '';
-      } else {
+      for (var i = 0; i < this.toggleableLayerIds.length; i++) {
+        var id = this.toggleableLayerIds[i];
+        var link = document.createElement('button');
         link.className = 'active';
-        this.map.setLayoutProperty('demoLayer', 'visibility', 'visible');
+        link.textContent = id;
+        link.onclick = () => {
+          var clickedLayer = link.textContent;
+          var visibility = this.map.getLayoutProperty(clickedLayer, 'visibility');
+          if (visibility === 'visible') {
+            this.map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            link.className = '';
+          } else {
+            link.className = 'active';
+            this.map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+          };
+        };
+        var layers = document.getElementById('menu');
+        layers.appendChild(link);
       };
-    };
-    var layers = document.getElementById('menu');
-    layers.appendChild(link);
+    });
   }
 }

@@ -1,10 +1,14 @@
 export default class GeoJson {
   type: string;
-  geometry: {
-    type: string,
-    coordinates: Array<number>,
-  };
-  properties: {
-    name: string,
-  }
+  features: [{
+    geometry: {
+      type: string;
+      coordinates: Array<number>;
+    },
+    properties: {
+      x: number;
+      group: number;
+    },
+    type: string
+  }];
 }

@@ -12,14 +12,15 @@ export class UploadComponent implements OnInit {
 
   file: any;
   fileExists = undefined;
+  fileName: string;
 
   constructor(private geoJsonService: GeojsonService, private http: HttpClient) { }
 
   ngOnInit(): void {
   }
 
-  saveGeoJson(uploadedFile) {
-    this.geoJsonService.create(uploadedFile).then(() => {
+  saveGeoJson(dataName, uploadedFile) {
+    this.geoJsonService.create(dataName, uploadedFile).then(() => {
       console.log('Posted new GeoJson object successfully!');
     });
   }
@@ -27,15 +28,15 @@ export class UploadComponent implements OnInit {
   fileChanged(e) {
     this.file = e.target.files[0];
     console.log(this.file);
-    //CHECK IF FILE IS JSON
-    if (this.file.type == "application/json") {
+    //CHECK IF FILE IS GEOJSON
+    if (this.file.name.substr(this.file.name.length - 8) == ".geojson") {
       this.fileExists = 1;
     } else if (this.file.name.substr(this.file.name.length - 4) == ".shp") {
-      //CONVERT SHP TO JSON, USE DIFFERENT SUBMIT BUTTON TO UPLOAD LOCAL JSON
+      //CONVERT SHP TO GEOJSON, USE DIFFERENT SUBMIT BUTTON TO UPLOAD LOCAL GEOJSON
       this.fileExists = 1;
     } else {
       this.fileExists = undefined;
-      alert("Upload only JSON or SHP files");
+      alert("Upload only GEOJSON or SHP files");
     }
   }
 
@@ -44,7 +45,10 @@ export class UploadComponent implements OnInit {
     fileReader.onload = (e) => {
       console.log(fileReader.result);
       let jsonObj = (JSON.parse(fileReader.result.toString()));
-      this.saveGeoJson(jsonObj);
+
+      //Bandaid solution to have duplicate filenames uploaded, need to relook later
+      let uploadedDataName = this.fileName+"_"+Date.now();
+      this.saveGeoJson(uploadedDataName, jsonObj);
     }
     fileReader.readAsText(this.file);
   }

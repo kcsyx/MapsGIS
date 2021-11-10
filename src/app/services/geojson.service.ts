@@ -19,8 +19,9 @@ export class GeojsonService {
     return this.geoJsonRef;
   }
 
-  create(geoJson: GeoJson): any {
-    return this.geoJsonRef.push(geoJson);
+  create(dataName:string, geoJson: GeoJson): any {
+    // return this.geoJsonRef.push(geoJson);
+    return this.db.object(this.dbPath+'/'+dataName).set(geoJson);
   }
 
   delete(key: string): Promise<void> {
