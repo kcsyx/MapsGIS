@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GeojsonService } from '../services/geojson.service';
 import GeoJson from '../models/geojson';
 import { HttpClient } from '@angular/common/http';
+// import { ShapeFileParser } from 'shapefile-parser';
+// import { ShapeFile } from 'shapefile-parser/models/shapefile';
 
 @Component({
   selector: 'app-upload',
@@ -20,7 +22,7 @@ export class UploadComponent implements OnInit {
   }
 
   saveGeoJson(dataName, geoJson) {
-    let postData = {dataName, geoJson};
+    let postData = { dataName, geoJson };
     this.geoJsonService.create(postData);
     // this.geoJsonService.create(dataName, geoJson)
     // .then(() => {
@@ -35,11 +37,19 @@ export class UploadComponent implements OnInit {
     if (this.file.name.substr(this.file.name.length - 8) == ".geojson") {
       this.fileExists = 1;
     } else if (this.file.name.substr(this.file.name.length - 4) == ".shp") {
-      //CONVERT SHP TO GEOJSON, USE DIFFERENT SUBMIT BUTTON TO UPLOAD LOCAL GEOJSON
-      this.fileExists = 1;
-
-
-
+      //CONVERT SHP TO GEOJSON
+      // let fileReader = new FileReader();
+      // fileReader.readAsArrayBuffer(this.file);
+      // fileReader.onload = (e) => {
+      //   var arrayBuffer: ArrayBuffer = fileReader.result as ArrayBuffer;
+      //   if (arrayBuffer) {
+      //     let buffer: any = Buffer.from(arrayBuffer);
+      //     let shapeFile: ShapeFile = ShapeFileParser.parse(buffer);
+      //     if (shapeFile.isValid()) {
+      //       console.log(shapeFile.ShapeRecords);
+      //     };
+      //   };
+      // };
     } else {
       this.fileExists = undefined;
       alert("Upload only GEOJSON or SHP files");
@@ -53,7 +63,7 @@ export class UploadComponent implements OnInit {
       let jsonObj = (JSON.parse(fileReader.result.toString()));
 
       //Bandaid solution to have duplicate filenames uploaded, need to relook later
-      let uploadedDataName = this.fileName+"_"+Date.now();
+      let uploadedDataName = this.fileName + "_" + Date.now();
       this.saveGeoJson(uploadedDataName, jsonObj);
     }
     fileReader.readAsText(this.file);
