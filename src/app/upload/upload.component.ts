@@ -19,10 +19,13 @@ export class UploadComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  saveGeoJson(dataName, uploadedFile) {
-    this.geoJsonService.create(dataName, uploadedFile).then(() => {
-      console.log('Posted new GeoJson object successfully!');
-    });
+  saveGeoJson(dataName, geoJson) {
+    let postData = {dataName, geoJson};
+    this.geoJsonService.create(postData);
+    // this.geoJsonService.create(dataName, geoJson)
+    // .then(() => {
+    //   console.log('Posted new GeoJson object successfully!');
+    // });
   }
 
   fileChanged(e) {

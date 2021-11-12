@@ -24,6 +24,9 @@ export class MapComponent implements OnInit {
   source: any;
   retrievedData: any;
   toggleableLayerIds = new Array;
+  //random color
+  n = (Math.random() * 0xfffff * 1000000).toString(16);
+
   constructor(private geoJsonService: GeojsonService) { }
 
   ngOnInit() {
@@ -62,24 +65,6 @@ export class MapComponent implements OnInit {
     }
     geolocate.on('geolocate', success);
 
-    // Add source and layers
-    // this.map.on('load', () => {
-    //   this.map.addSource('demoSource', {
-    //     type: 'geojson',
-    //     data: 'https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson'
-    //   });
-    //   this.map.addLayer({
-    //     'id': 'demoLayer',
-    //     'source': 'demoSource',
-    //     'type': 'circle',
-    //     'paint': {
-    //       'circle-radius': 8,
-    //       'circle-stroke-width': 2,
-    //       'circle-color': 'red',
-    //       'circle-stroke-color': 'white'
-    //     }
-    //   });
-    // });
     this.retrieveData();
   }
 
@@ -95,41 +80,61 @@ export class MapComponent implements OnInit {
       this.retrievedData = data;
       this.retrievedData.forEach(e => {
         this.toggleableLayerIds.push(e.key);
-        console.log(e);
         //Turn retrieved data into map Data Source and Layers
-
-
+        this.map.on('load', () => {
+          this.map.addSource(e.key, {
+            type: 'geojson',
+            data: {
+              "type": e.type,
+              "features": e.features
+            }
+          });
+          this.map.addLayer({
+            'id': e.key,
+            'type': 'fill',
+            'source': e.key,
+            'paint': {
+              'fill-color': '#' + this.n.slice(0, 6),
+              'fill-opacity': 0.4
+            },
+            'filter': ['==', '$type', 'Polygon'],
+            'layout': {
+              // Make the layer visible by default.
+              'visibility': 'visible'
+            },
+          });
+          this.map.addLayer({
+            'id': e.key + 'Point',
+            'type': 'circle',
+            'source': e.key,
+            'paint': {
+              'circle-radius': 6,
+              'circle-color': '#' + this.n.slice(0, 6)
+            },
+            'filter': ['==', '$type', 'Point'],
+            'layout': {
+              // Make the layer visible by default.
+              'visibility': 'visible'
+            },
+          });
+          this.map.addLayer({
+            'id': e.key + 'Line',
+            'type': 'line',
+            'source': e.key,
+            'paint': {
+              'line-color': '#' + this.n.slice(0, 6),
+              'line-width': 8
+            },
+            'filter': ['==', '$type', 'LineString'],
+            'layout': {
+              'line-join': 'round',
+              'line-cap': 'round',
+              // Make the layer visible by default.
+              'visibility': 'visible'
+            },
+          });
+        });
       });
-
-      // for (var i = 0; i < this.toggleableLayerIds.length; i++) {
-      //   var id = this.toggleableLayerIds[i];
-      //   var subMenu = document.createElement('div');
-      //   var link = document.createElement('button');
-      //   var deleteButton = document.createElement('button');
-      //   deleteButton.textContent = 'Delete';
-      //   subMenu.className = 'subMenu';
-      //   link.className = 'active';
-      //   link.textContent = id;
-      //   link.onclick = () => {
-      //     var clickedLayer = link.textContent;
-      //     var visibility = this.map.getLayoutProperty(clickedLayer, 'visibility');
-      //     if (visibility === 'visible') {
-      //       this.map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-      //       link.className = '';
-      //     } else {
-      //       link.className = 'active';
-      //       this.map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-      //     };
-      //   };
-      //   var layers = document.getElementById('menu');
-      //   layers.appendChild(subMenu);
-      //   subMenu.append(link);
-      //   subMenu.appendChild(deleteButton);
-      //   deleteButton.onclick = () => {
-      //     console.log("Deleted" + id);
-
-      //   }
-      // };
     });
   }
 
@@ -137,14 +142,28 @@ export class MapComponent implements OnInit {
     var visibility = this.map.getLayoutProperty(key, 'visibility');
     if (visibility === 'visible') {
       this.map.setLayoutProperty(key, 'visibility', 'none');
+      this.map.setLayoutProperty(key + 'Point', 'visibility', 'none');
+      this.map.setLayoutProperty(key + 'Line', 'visibility', 'none');
     } else {
       this.map.setLayoutProperty(key, 'visibility', 'visible');
+      this.map.setLayoutProperty(key + 'Point', 'visibility', 'visible');
+      this.map.setLayoutProperty(key + 'Line', 'visibility', 'visible');
     };
   }
 
+  // deleteData(key) {
+  //   this.geoJsonService.delete(key).then(() => {
+  //     console.log('Deleted' + key);
+  //   }).catch(err => console.log(err));
+  // }
   deleteData(key) {
-    this.geoJsonService.delete(key).then(() => {
+    this.geoJsonService.delete(key).subscribe(() => {
       console.log('Deleted' + key);
-    }).catch(err => console.log(err));
+      //Remove source and layers
+      this.map.removeLayer(key);
+      this.map.removeLayer(key + 'Point');
+      this.map.removeLayer(key + 'Line');
+      this.map.removeSource(key);
+    });
   }
 }
