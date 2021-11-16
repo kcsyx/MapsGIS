@@ -5,7 +5,6 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 import { GeojsonService } from '../services/geojson.service';
 import { map } from 'rxjs/operators';
-import { ResourceLoader } from '@angular/compiler';
 
 @Component({
   selector: 'app-map',
@@ -62,8 +61,9 @@ export class MapComponent implements OnInit {
       directions.setOrigin([pos.coords.longitude, pos.coords.latitude]);
     }
     geolocate.on('geolocate', success);
-
-    this.retrieveData();
+    this.map.on('load', () => {
+      this.retrieveData();
+    });
   }
 
   // Toggle Data visibility and retrieve data from firebase
@@ -79,58 +79,56 @@ export class MapComponent implements OnInit {
       this.retrievedData.forEach(e => {
         this.toggleableLayerIds.push(e.key);
         //Turn retrieved data into map Data Source and Layers
-        this.map.on('load', () => {
-          this.map.addSource(e.key, {
-            type: 'geojson',
-            data: {
-              "type": e.type,
-              "features": e.features
-            }
-          });
-          this.map.addLayer({
-            'id': e.key,
-            'type': 'fill',
-            'source': e.key,
-            'paint': {
-              'fill-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0,6),
-              'fill-opacity': 0.4
-            },
-            'filter': ['==', '$type', 'Polygon'],
-            'layout': {
-              // Make the layer visible by default.
-              'visibility': 'visible'
-            },
-          });
-          this.map.addLayer({
-            'id': e.key + 'Point',
-            'type': 'circle',
-            'source': e.key,
-            'paint': {
-              'circle-radius': 6,
-              'circle-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0,6)
-            },
-            'filter': ['==', '$type', 'Point'],
-            'layout': {
-              // Make the layer visible by default.
-              'visibility': 'visible'
-            },
-          });
-          this.map.addLayer({
-            'id': e.key + 'Line',
-            'type': 'line',
-            'source': e.key,
-            'paint': {
-              'line-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0,6),
-              'line-width': 8
-            },
-            'filter': ['==', '$type', 'LineString'],
-            'layout': {
-              'line-join': 'round',
-              'line-cap': 'round',
-              // Make the layer visible by default.
-              'visibility': 'visible'
-            },
-          });
+        this.map.addSource(e.key, {
+          type: 'geojson',
+          data: {
+            "type": e.type,
+            "features": e.features
+          }
+        });
+        this.map.addLayer({
+          'id': e.key,
+          'type': 'fill',
+          'source': e.key,
+          'paint': {
+            'fill-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0, 6),
+            'fill-opacity': 0.4
+          },
+          'filter': ['==', '$type', 'Polygon'],
+          'layout': {
+            // Make the layer visible by default.
+            'visibility': 'visible'
+          },
+        });
+        this.map.addLayer({
+          'id': e.key + 'Point',
+          'type': 'circle',
+          'source': e.key,
+          'paint': {
+            'circle-radius': 6,
+            'circle-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0, 6)
+          },
+          'filter': ['==', '$type', 'Point'],
+          'layout': {
+            // Make the layer visible by default.
+            'visibility': 'visible'
+          },
+        });
+        this.map.addLayer({
+          'id': e.key + 'Line',
+          'type': 'line',
+          'source': e.key,
+          'paint': {
+            'line-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0, 6),
+            'line-width': 8
+          },
+          'filter': ['==', '$type', 'LineString'],
+          'layout': {
+            'line-join': 'round',
+            'line-cap': 'round',
+            // Make the layer visible by default.
+            'visibility': 'visible'
+          },
         });
 
         // Create a popup, but don't add it to the map yet.
