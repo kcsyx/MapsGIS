@@ -24,8 +24,6 @@ export class MapComponent implements OnInit {
   source: any;
   retrievedData: any;
   toggleableLayerIds = new Array;
-  //random color
-  n = (Math.random() * 0xfffff * 1000000).toString(16);
 
   constructor(private geoJsonService: GeojsonService) { }
 
@@ -94,7 +92,7 @@ export class MapComponent implements OnInit {
             'type': 'fill',
             'source': e.key,
             'paint': {
-              'fill-color': '#' + this.n.slice(0, 6),
+              'fill-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0,6),
               'fill-opacity': 0.4
             },
             'filter': ['==', '$type', 'Polygon'],
@@ -109,7 +107,7 @@ export class MapComponent implements OnInit {
             'source': e.key,
             'paint': {
               'circle-radius': 6,
-              'circle-color': '#' + this.n.slice(0, 6)
+              'circle-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0,6)
             },
             'filter': ['==', '$type', 'Point'],
             'layout': {
@@ -122,7 +120,7 @@ export class MapComponent implements OnInit {
             'type': 'line',
             'source': e.key,
             'paint': {
-              'line-color': '#' + this.n.slice(0, 6),
+              'line-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0,6),
               'line-width': 8
             },
             'filter': ['==', '$type', 'LineString'],
@@ -134,6 +132,43 @@ export class MapComponent implements OnInit {
             },
           });
         });
+
+        // Create a popup, but don't add it to the map yet.
+        const popup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false
+        });
+
+        //Map layer hover
+
+        this.map.on('mouseenter', e.key, (f) => {
+          this.map.getCanvas().style.cursor = 'pointer';
+          // Populate the popup and set its coordinates based on the feature found.
+          popup.setLngLat(f.lngLat).setHTML(e.key).addTo(this.map);
+        });
+        this.map.on('mouseenter', e.key + 'Point', (f) => {
+          this.map.getCanvas().style.cursor = 'pointer';
+          // Populate the popup and set its coordinates based on the feature found.
+          popup.setLngLat(f.lngLat).setHTML(e.key).addTo(this.map);
+        });
+        this.map.on('mouseenter', e.key + 'Line', (f) => {
+          this.map.getCanvas().style.cursor = 'pointer';
+          // Populate the popup and set its coordinates based on the feature found.
+          popup.setLngLat(f.lngLat).setHTML(e.key).addTo(this.map);
+        });
+        this.map.on('mouseleave', e.key, () => {
+          this.map.getCanvas().style.cursor = '';
+          popup.remove();
+        });
+        this.map.on('mouseleave', e.key + 'Point', () => {
+          this.map.getCanvas().style.cursor = '';
+          popup.remove();
+        });
+        this.map.on('mouseleave', e.key + 'Line', () => {
+          this.map.getCanvas().style.cursor = '';
+          popup.remove();
+        });
+
       });
     });
   }
