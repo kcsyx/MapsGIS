@@ -15,6 +15,7 @@ export class UploadComponent implements OnInit {
   file: any;
   fileExists = undefined;
   fileName: string = undefined;
+  layerColor: string;
 
   constructor(private geoJsonService: GeojsonService, private http: HttpClient) { }
 
@@ -61,7 +62,7 @@ export class UploadComponent implements OnInit {
     fileReader.onload = (e) => {
       console.log(fileReader.result);
       let jsonObj = (JSON.parse(fileReader.result.toString()));
-
+      jsonObj["layerColor"] = this.layerColor;
       //Bandaid solution to have duplicate filenames uploaded, need to relook later
       let uploadedDataName = this.fileName + "_" + Date.now();
       this.saveGeoJson(uploadedDataName, jsonObj);

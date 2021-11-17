@@ -91,7 +91,7 @@ export class MapComponent implements OnInit {
           'type': 'fill',
           'source': e.key,
           'paint': {
-            'fill-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0, 6),
+            'fill-color': e.layerColor,
             'fill-opacity': 0.4
           },
           'filter': ['==', '$type', 'Polygon'],
@@ -106,7 +106,7 @@ export class MapComponent implements OnInit {
           'source': e.key,
           'paint': {
             'circle-radius': 6,
-            'circle-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0, 6)
+            'circle-color': e.layerColor,
           },
           'filter': ['==', '$type', 'Point'],
           'layout': {
@@ -119,7 +119,7 @@ export class MapComponent implements OnInit {
           'type': 'line',
           'source': e.key,
           'paint': {
-            'line-color': '#' + ((Math.random() * 0xfffff * 1000000).toString(16)).slice(0, 6),
+            'line-color': e.layerColor,
             'line-width': 8
           },
           'filter': ['==', '$type', 'LineString'],
@@ -184,11 +184,6 @@ export class MapComponent implements OnInit {
     };
   }
 
-  // deleteData(key) {
-  //   this.geoJsonService.delete(key).then(() => {
-  //     console.log('Deleted' + key);
-  //   }).catch(err => console.log(err));
-  // }
   deleteData(key) {
     this.geoJsonService.delete(key).subscribe(() => {
       console.log('Deleted' + key);

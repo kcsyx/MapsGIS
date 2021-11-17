@@ -1,5 +1,6 @@
 <nav id="menu">
   <div *ngFor="let retrieveData of retrievedData">
+    <div style="height: 15px; width: 15px; float: left" [ngStyle]="{'background-color': retrieveData.layerColor}"></div>
     <button (click)="toggleVisibility(retrieveData.key)">
       {{ retrieveData.key }}
     </button>
