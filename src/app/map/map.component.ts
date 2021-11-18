@@ -105,7 +105,7 @@ export class MapComponent implements OnInit {
           'type': 'circle',
           'source': e.key,
           'paint': {
-            'circle-radius': 6,
+            'circle-radius': 4,
             'circle-color': e.layerColor,
           },
           'filter': ['==', '$type', 'Point'],
@@ -120,7 +120,7 @@ export class MapComponent implements OnInit {
           'source': e.key,
           'paint': {
             'line-color': e.layerColor,
-            'line-width': 8
+            'line-width': 2
           },
           'filter': ['==', '$type', 'LineString'],
           'layout': {

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GeojsonService } from '../services/geojson.service';
-import GeoJson from '../models/geojson';
 import { HttpClient } from '@angular/common/http';
-import { ShapeFileParser } from 'shapefile-parser';
-import { ShapeFile } from 'shapefile-parser/models/shapefile';
+import shp from 'shpjs';
 
 @Component({
   selector: 'app-upload',
@@ -15,7 +13,9 @@ export class UploadComponent implements OnInit {
   file: any;
   fileExists = undefined;
   fileName: string = undefined;
-  layerColor: string;
+  layerColor: string = "#c05959";
+  shpZipFile = undefined;
+  convertedGeoJson: any;
 
   constructor(private geoJsonService: GeojsonService, private http: HttpClient) { }
 
@@ -32,12 +32,14 @@ export class UploadComponent implements OnInit {
   }
 
   fileChanged(e) {
+    this.fileExists = undefined;
+    this.shpZipFile = undefined;
     this.file = e.target.files[0];
     console.log(this.file);
     //CHECK IF FILE IS GEOJSON
     if (this.file.name.substr(this.file.name.length - 8) == ".geojson") {
       this.fileExists = 1;
-    } else if (this.file.name.substr(this.file.name.length - 4) == ".shp") {
+    } else if (this.file.name.substr(this.file.name.length - 4) == ".zip") {
       //CONVERT SHP TO GEOJSON
       let fileReader = new FileReader();
       fileReader.readAsArrayBuffer(this.file);
@@ -45,10 +47,10 @@ export class UploadComponent implements OnInit {
         var arrayBuffer: ArrayBuffer = fileReader.result as ArrayBuffer;
         if (arrayBuffer) {
           let buffer: any = Buffer.from(arrayBuffer);
-          let shapeFile: ShapeFile = ShapeFileParser.parse(buffer);
-          if (shapeFile.isValid()) {
-            console.log(shapeFile.ShapeRecords);
-          };
+          shp(buffer).then((geojson) => {
+            this.convertedGeoJson = geojson;
+            this.shpZipFile = 1;
+          });
         };
       };
     } else {
@@ -66,7 +68,18 @@ export class UploadComponent implements OnInit {
       //Bandaid solution to have duplicate filenames uploaded, need to relook later
       let uploadedDataName = this.fileName + "_" + Date.now();
       this.saveGeoJson(uploadedDataName, jsonObj);
+      this.fileExists = undefined;
     }
     fileReader.readAsText(this.file);
+  }
+
+  convertUpload(geojson) {
+    console.log(geojson)
+    let jsonObj = geojson;
+    jsonObj["layerColor"] = this.layerColor;
+    //Bandaid solution to have duplicate filenames uploaded, need to relook later
+    let uploadedDataName = this.fileName + "_" + Date.now();
+    this.saveGeoJson(uploadedDataName, jsonObj);
+    this.shpZipFile = undefined;
   }
 }

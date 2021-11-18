@@ -6,3 +6,5 @@
   <input type='file' (change)="fileChanged($event)">
 </div>
 <button [disabled]="!fileName || !fileExists" type="button" class="btn btn-primary" (click)="uploadDocument(this.file)">Upload File</button>
+
+<button [disabled]="!fileName || !shpZipFile" type="button" class="btn btn-primary" (click)="convertUpload(this.convertedGeoJson)">Upload converted shp file</button>
