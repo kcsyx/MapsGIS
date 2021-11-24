@@ -1,12 +1,18 @@
-<nav id="menu">
-  <div *ngFor="let retrieveData of retrievedData">
-    <div style="height: 15px; width: 15px; float: left" [ngStyle]="{'background-color': retrieveData.layerColor}"></div>
-    <button (click)="toggleVisibility(retrieveData.key)">
-      {{ retrieveData.key }}
-    </button>
-    <button (click)="deleteData(retrieveData.key)">
-      Delete
-    </button>
-  </div>
-</nav>
-<div class="map" id="map" class="match-parent"></div>
+<div>
+  <nav id="menu">
+    <div id="layers" *ngFor="let retrieveData of retrievedData"
+      [ngStyle]="{'background-color': retrieveData.layerColor}">
+      <!-- <div style="height: 15px; width: 15px; float: left" [ngStyle]="{'background-color': retrieveData.layerColor}">
+      </div> -->
+      <div>
+        <button (click)="toggleVisibility(retrieveData.key)">
+          {{ retrieveData.key }}
+        </button>
+        <button (click)="deleteData(retrieveData.key)">
+          Delete
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div class="map" id="map" class="match-parent"></div>
+</div>
