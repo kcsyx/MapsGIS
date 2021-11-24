@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './home/home.component';
 import { MapComponent } from './map/map.component';
 import { UploadComponent } from './upload/upload.component';
 
@@ -18,7 +17,6 @@ import { UploadComponent } from './upload/upload.component';
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent,
     MapComponent,
     UploadComponent
   ],

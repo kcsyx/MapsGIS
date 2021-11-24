@@ -1,10 +1,10 @@
 <div>
   <input type="text" [(ngModel)] = "fileName" placeholder="Data Layer name">
-  <input type="color" [(ngModel)] = "layerColor" value="#c05959"> Pick a layer color
+  <input type="color" [(ngModel)] = "layerColor" value="#c05959"> Data Layer color
 </div>
 <div>
   <input type='file' (change)="fileChanged($event)">
 </div>
-<button [disabled]="!fileName || !fileExists" type="button" class="btn btn-primary" (click)="uploadDocument(this.file)">Upload File</button>
+<button [disabled]="!fileName || !fileExists" type="button" class="btn btn-primary" (click)="uploadDocument(this.file)">Upload GeoJson file</button>
 
-<button [disabled]="!fileName || !shpZipFile" type="button" class="btn btn-primary" (click)="convertUpload(this.convertedGeoJson)">Upload converted shp file</button>
+<button [disabled]="!fileName || !shpZipFile" type="button" class="btn btn-primary" (click)="convertUpload(this.convertedGeoJson)">Upload & Convert SHP ZIP file </button>
