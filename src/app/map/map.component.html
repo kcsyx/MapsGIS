@@ -1,11 +1,11 @@
 <div>
   <nav id="menu">
-    <div id="layers" *ngFor="let retrieveData of retrievedData; let i = index"
-      [ngStyle]="{'background-color': retrieveData.layerColor}" [ngClass]="{'selected-color' : i==selectedIndex}">
+    <div id="layers" *ngFor="let retrieveData of retrievedData;"
+      [ngStyle]="{'background-color': retrieveData.layerColor}" [ngClass]="{'opacity':selectedTasks[retrieveData.key]}">
       <!-- <div style="height: 15px; width: 15px; float: left" [ngStyle]="{'background-color': retrieveData.layerColor}">
       </div> -->
       <div>
-        <button (click)="toggleVisibility(retrieveData.key, i)">
+        <button (click)="toggleVisibility(retrieveData.key)">
           {{ retrieveData.key }}
         </button>
         <button id="layersDelete" (click)="deleteData(retrieveData.key)">
