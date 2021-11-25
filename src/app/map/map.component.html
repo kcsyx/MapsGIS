@@ -1,18 +1,19 @@
 <div>
   <nav id="menu">
-    <div id="layers" *ngFor="let retrieveData of retrievedData"
-      [ngStyle]="{'background-color': retrieveData.layerColor}">
+    <div id="layers" *ngFor="let retrieveData of retrievedData; let i = index"
+      [ngStyle]="{'background-color': retrieveData.layerColor}" [ngClass]="{'selected-color' : i==selectedIndex}">
       <!-- <div style="height: 15px; width: 15px; float: left" [ngStyle]="{'background-color': retrieveData.layerColor}">
       </div> -->
       <div>
-        <button (click)="toggleVisibility(retrieveData.key)">
+        <button (click)="toggleVisibility(retrieveData.key, i)">
           {{ retrieveData.key }}
         </button>
-        <button (click)="deleteData(retrieveData.key)">
+        <button id="layersDelete" (click)="deleteData(retrieveData.key)">
           Delete
         </button>
       </div>
     </div>
+    <a routerLink="/upload">Upload Layers</a>
   </nav>
   <div class="map" id="map" class="match-parent"></div>
 </div>

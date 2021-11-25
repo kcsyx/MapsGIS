@@ -23,6 +23,7 @@ export class MapComponent implements OnInit {
   source: any;
   retrievedData: any;
   toggleableLayerIds = new Array;
+  public selectedIndex;
 
   constructor(private geoJsonService: GeojsonService) { }
 
@@ -171,13 +172,15 @@ export class MapComponent implements OnInit {
     });
   }
 
-  toggleVisibility(key) {
+  toggleVisibility(key, i) {
     var visibility = this.map.getLayoutProperty(key, 'visibility');
     if (visibility === 'visible') {
+      this.selectedIndex = i;
       this.map.setLayoutProperty(key, 'visibility', 'none');
       this.map.setLayoutProperty(key + 'Point', 'visibility', 'none');
       this.map.setLayoutProperty(key + 'Line', 'visibility', 'none');
     } else {
+      this.selectedIndex = undefined;
       this.map.setLayoutProperty(key, 'visibility', 'visible');
       this.map.setLayoutProperty(key + 'Point', 'visibility', 'visible');
       this.map.setLayoutProperty(key + 'Line', 'visibility', 'visible');

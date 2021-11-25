@@ -1,6 +1,6 @@
 .match-parent {
   float: right;
-  width: 78%;
+  width: 79%;
   height: 600px;
 }
 
@@ -10,12 +10,47 @@
   width: 20%;
   height: 600px;
   border-radius: 3px;
+  box-sizing: border-box;
   border: 1px solid rgba(0, 0, 0, 0.4);
   font-family: "Open Sans", sans-serif;
+  position: relative;
 }
 
 #menu #layers {
+  width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
   height: 30px;
+}
+
+.selected-color {
+  opacity: 50%;
+}
+
+#menu a {
+  position: absolute;
+  bottom: 0;
+  color: white;
+  background-color: dodgerblue;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+#menu a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+#menu #layersDelete {
+  float: right;
+}
+@media screen and (max-width: 500px) {
+  #menu a {
+    display: block;
+  }
 }

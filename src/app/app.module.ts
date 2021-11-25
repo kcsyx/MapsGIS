@@ -9,14 +9,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { environment } from 'src/environments/environment';
-import { HeaderComponent } from './header/header.component';
 import { MapComponent } from './map/map.component';
 import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     MapComponent,
     UploadComponent
   ],

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GeojsonService } from '../services/geojson.service';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import shp from 'shpjs';
 
@@ -17,9 +18,16 @@ export class UploadComponent implements OnInit {
   shpZipFile = undefined;
   convertedGeoJson: any;
 
-  constructor(private geoJsonService: GeojsonService, private http: HttpClient) { }
+  constructor(private geoJsonService: GeojsonService, private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  mapPage() {
+    this.router.navigate(['/map'])
+      .then(() => {
+        window.location.reload();
+      });
   }
 
   saveGeoJson(dataName, geoJson) {

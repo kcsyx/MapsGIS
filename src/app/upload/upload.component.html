@@ -6,5 +6,5 @@
   <input type='file' (change)="fileChanged($event)">
 </div>
 <button [disabled]="!fileName || !fileExists" type="button" class="btn btn-primary" (click)="uploadDocument(this.file)">Upload GeoJson file</button>
-
 <button [disabled]="!fileName || !shpZipFile" type="button" class="btn btn-primary" (click)="convertUpload(this.convertedGeoJson)">Upload & Convert SHP ZIP file </button>
+<a (click)="mapPage()" routerLink="/map">Back to Map</a>
