@@ -1,14 +1,14 @@
 .match-parent {
   float: right;
   width: 79%;
-  height: 600px;
+  height: 100vh;
 }
 
 #menu {
   float: left;
   background: #fff;
   width: 20%;
-  height: 600px;
+  height: 100vh;
   border-radius: 3px;
   box-sizing: border-box;
   border: 1px solid rgba(0, 0, 0, 0.4);
