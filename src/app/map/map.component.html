@@ -8,11 +8,11 @@
         <button style="width:100%" (click)="toggleVisibility(retrieveData.key)">
           {{ retrieveData.key }}
         </button>
-        <button (click)="flyTo(retrieveData)">
-          Go to layer
-        </button>
         <button id="layersDelete" (click)="deleteData(retrieveData.key)">
           Delete
+        </button>
+        <button style="float: right" (click)="flyTo(retrieveData)">
+          Go to layer
         </button>
       </div>
     </div>
