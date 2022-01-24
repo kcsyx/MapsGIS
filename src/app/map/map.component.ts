@@ -171,6 +171,22 @@ export class MapComponent implements OnInit {
     });
   }
 
+  flyTo(retrieveData) {
+    if (retrieveData.features[0].geometry.type == "Point") {
+      this.map.flyTo({
+        center: retrieveData.features[0].geometry.coordinates
+      });
+    } else if (retrieveData.features[0].geometry.type == "LineString") {
+      this.map.flyTo({
+        center: retrieveData.features[0].geometry.coordinates[0]
+      });
+    } else if (retrieveData.features[0].geometry.type == "Polygon") {
+      this.map.flyTo({
+        center: retrieveData.features[0].geometry.coordinates[0][0]
+      });
+    };
+  }
+
   toggleVisibility(key) {
     var visibility = this.map.getLayoutProperty(key, 'visibility');
     if (visibility === 'visible') {

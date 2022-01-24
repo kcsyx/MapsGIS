@@ -4,9 +4,12 @@
       [ngStyle]="{'background-color': retrieveData.layerColor}" [ngClass]="{'opacity':selectedTasks[retrieveData.key]}">
       <!-- <div style="height: 15px; width: 15px; float: left" [ngStyle]="{'background-color': retrieveData.layerColor}">
       </div> -->
-      <div>
-        <button (click)="toggleVisibility(retrieveData.key)">
+      <div style="height: 100%;">
+        <button style="width:100%" (click)="toggleVisibility(retrieveData.key)">
           {{ retrieveData.key }}
+        </button>
+        <button (click)="flyTo(retrieveData)">
+          Go to layer
         </button>
         <button id="layersDelete" (click)="deleteData(retrieveData.key)">
           Delete
