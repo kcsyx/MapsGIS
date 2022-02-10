@@ -5,6 +5,7 @@ import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-direct
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 import { GeojsonService } from '../services/geojson.service';
 import { map } from 'rxjs/operators';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'app-map',
@@ -24,7 +25,7 @@ export class MapComponent implements OnInit {
   retrievedData: any;
   toggleableLayerIds = new Array;
   selectedTasks = {};
-  constructor(private geoJsonService: GeojsonService) { }
+  constructor(private db: AngularFireDatabase, private geoJsonService: GeojsonService) { }
 
   ngOnInit() {
     this.buildMap();
@@ -168,6 +169,12 @@ export class MapComponent implements OnInit {
         });
 
       });
+    });
+  }
+  downloadFile(key) {
+    let fileName = key;
+    this.db.database.ref("geojson/").child(key).once("value", (key) => {
+      this.geoJsonService.download(fileName, key.val());
     });
   }
 

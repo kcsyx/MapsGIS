@@ -11,7 +11,10 @@
         <button id="layersDelete" (click)="deleteData(retrieveData.key)">
           Delete
         </button>
-        <button style="float: right" (click)="flyTo(retrieveData)">
+        <button id="fileDownload" (click)="downloadFile(retrieveData.key)">
+          Download
+        </button>
+        <button id="flyTo" (click)="flyTo(retrieveData)">
           Go to layer
         </button>
       </div>

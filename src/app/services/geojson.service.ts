@@ -4,6 +4,7 @@ import GeoJson from '../models/geojson';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import FileSaver from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -22,21 +23,19 @@ export class GeojsonService {
     return this.geoJsonRef;
   }
 
-  // create(dataName: string, geoJson: GeoJson): any {
-  //   return this.db.object(this.dbPath + '/' + dataName).set(geoJson);
-  // }
-
-  create(postData:{dataName: string, geoJson: any}){
+  create(postData: { dataName: string, geoJson: any }) {
     const url = environment.firebaseConfig.databaseURL + '/geojson/' + postData.dataName + '.json';
-    this.http.put(url, postData.geoJson).subscribe(responseData=>{console.log('Posted successfully' + responseData)});
+    this.http.put(url, postData.geoJson).subscribe(responseData => { console.log('Posted successfully' + responseData) });
   }
-
-  // delete(key: string): Promise<void> {
-  //   return this.geoJsonRef.remove(key);
-  // }
 
   delete(key: string): Observable<any> {
     const url = environment.firebaseConfig.databaseURL + '/geojson/' + key + '.json';
     return this.http.delete(url);
+  }
+
+  download(fileName, keyValue) {
+    let file = JSON.stringify(keyValue);
+    let blob = new Blob([file], { type: "application/JSON" });
+    FileSaver.saveAs(blob, fileName + ".geojson");
   }
 }

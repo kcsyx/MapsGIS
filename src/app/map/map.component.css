@@ -49,6 +49,15 @@
 #menu #layersDelete {
   float: right;
 }
+
+#menu #fileDownload {
+  float: right;
+}
+
+#menu #flyTo {
+  float: right;
+}
+
 @media screen and (max-width: 500px) {
   #menu a {
     display: block;
