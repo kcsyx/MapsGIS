@@ -205,6 +205,7 @@ export class MapComponent implements OnInit {
 
   toggleVisibility(key) {
     var visibility = this.map.getLayoutProperty(key, 'visibility');
+    console.log(this.retrievedData);
     if (visibility === 'visible') {
       this.selectedTasks[key] = true;
       this.map.setLayoutProperty(key, 'visibility', 'none');
@@ -220,12 +221,15 @@ export class MapComponent implements OnInit {
 
   deleteData(key) {
     this.geoJsonService.delete(key).subscribe(() => {
-      console.log('Deleted' + key);
+      this.retrievedData.splice(this.retrievedData.findIndex(function (i) {
+        return i.key === key;
+      }), 1);
       //Remove source and layers
       this.map.removeLayer(key);
       this.map.removeLayer(key + 'Point');
       this.map.removeLayer(key + 'Line');
       this.map.removeSource(key);
+      console.log('Deleted' + key);
     });
   }
 }

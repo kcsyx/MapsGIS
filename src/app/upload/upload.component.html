@@ -1,25 +1,25 @@
 <div id="uploadBody">
   <h2>Upload your GEOJSON or SHP files to the map</h2>
-  <div>
-    <label>Data layer name: </label>
-    <input type="text" [(ngModel)]="fileName" placeholder="Layer Name">
-  </div>
-  <div>
-    <label>Data layer color: </label>
-    <input type="color" [(ngModel)]="layerColor" value="#c05959">
-  </div>
-  <div>
-    <input type='file' (change)="fileChanged($event)" accept=".zip,.geojson">
-  </div>
-  <div>
-    <button [disabled]="!fileName || !fileExists" type="button" class="btn btn-primary"
-      (click)="uploadDocument(this.file)">Upload GeoJson file</button>
-  </div>
-  <div>
-    <button [disabled]="!fileName || !shpZipFile" type="button" class="btn btn-primary"
-      (click)="convertUpload(this.convertedGeoJson)">Upload & Convert SHP ZIP file </button>
+  <div id="mainUpload">
+    <div>
+      <label>Data layer name: </label>
+      <input type="text" [(ngModel)]="fileName" placeholder="Layer Name">
+    </div>
+    <div>
+      <label>Data layer color: </label>
+      <input type="color" [(ngModel)]="layerColor" value="#c05959">
+    </div>
+    <div>
+      <input type='file' (change)="fileChanged($event)" accept=".zip,.geojson">
+    </div>
+    <div>
+      <button [disabled]="!fileName || !fileExists" type="button" class="btn btn-primary"
+        (click)="uploadDocument(this.file)">Upload GeoJson file</button>
+    </div>
+    <div>
+      <button [disabled]="!fileName || !shpZipFile" type="button" class="btn btn-primary"
+        (click)="convertUpload(this.convertedGeoJson)">Upload & Convert SHP ZIP file </button>
+    </div>
   </div>
   <a (click)="mapPage()" routerLink="/map">Back to Map</a>
-</div>
-<div id="sideImage">
 </div>

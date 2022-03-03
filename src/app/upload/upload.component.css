@@ -1,19 +1,7 @@
-#sideImage {
-  float: right;
-  width: 50%;
-  height: 100vh;
-}
-
-#sideImage img {
-  width: 100%;
-  height: auto;
-}
-
 #uploadBody {
   text-align: center;
-  float: left;
   background: #fff;
-  width: 50%;
+  width: 100%;
   height: 100vh;
   border-radius: 3px;
   box-sizing: border-box;
@@ -44,6 +32,14 @@
 #uploadBody a:hover {
   background-color: #ddd;
   color: black;
+}
+
+#mainUpload input {
+  margin-bottom: 20px;
+}
+
+#mainUpload button {
+  margin-bottom: 20px;
 }
 
 @media screen and (max-width: 500px) {
