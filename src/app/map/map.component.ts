@@ -41,12 +41,11 @@ export class MapComponent implements OnInit {
     });
 
     // Add map controls
-    this.map.addControl(new mapboxgl.NavigationControl());
     var directions = new MapboxDirections({
       accessToken: environment.mapbox.accessToken
     });
-    this.map.addControl(directions, 'top-left');
-    this.map.addControl(new MapboxTraffic());
+    this.map.addControl(directions, 'top-right');
+    this.map.addControl(new mapboxgl.NavigationControl(), 'bottom-right');
 
     // Initialize the GeolocateControl.
     const geolocate = new mapboxgl.GeolocateControl({
@@ -56,7 +55,8 @@ export class MapComponent implements OnInit {
       trackUserLocation: true
     });
     // Add the control to the map.
-    this.map.addControl(geolocate);
+    this.map.addControl(geolocate, 'bottom-right');
+    this.map.addControl(new MapboxTraffic(), 'bottom-right');
     // Set an event listener that fires when a geolocate event occurs.
     function success(pos) {
       directions.setOrigin([pos.coords.longitude, pos.coords.latitude]);
@@ -171,6 +171,15 @@ export class MapComponent implements OnInit {
       });
     });
   }
+
+  openNav() {
+    document.getElementById("sideNavigation").style.width = "250px";
+  }
+
+  closeNav() {
+    document.getElementById("sideNavigation").style.width = "0";
+  }
+
   downloadFile(key) {
     let fileName = key;
     this.db.database.ref("geojson/").child(key).once("value", (key) => {

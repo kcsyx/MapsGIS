@@ -1,25 +1,38 @@
 <div>
-  <nav id="menu">
-    <div id="layers" *ngFor="let retrieveData of retrievedData;"
-      [ngStyle]="{'background-color': retrieveData.layerColor}" [ngClass]="{'opacity':selectedTasks[retrieveData.key]}">
-      <!-- <div style="height: 15px; width: 15px; float: left" [ngStyle]="{'background-color': retrieveData.layerColor}">
-      </div> -->
-      <div style="height: 100%;">
-        <button style="width:100%" (click)="toggleVisibility(retrieveData.key)">
-          {{ retrieveData.key }}
-        </button>
-        <button id="layersDelete" (click)="deleteData(retrieveData.key)">
-          Delete
-        </button>
-        <button id="fileDownload" (click)="downloadFile(retrieveData.key)">
-          Download
-        </button>
-        <button id="flyTo" (click)="flyTo(retrieveData)">
-          Go to layer
-        </button>
+  <div id="sideNavigation" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+    <nav id="menu">
+      <div id="layers" *ngFor="let retrieveData of retrievedData;"
+        [ngStyle]="{'background-color': retrieveData.layerColor}"
+        [ngClass]="{'opacity':selectedTasks[retrieveData.key]}">
+        <!-- <div style="height: 15px; width: 15px; float: left" [ngStyle]="{'background-color': retrieveData.layerColor}">
+        </div> -->
+        <div style="height: 100%;">
+          <button style="width:100%" (click)="toggleVisibility(retrieveData.key)">
+            {{ retrieveData.key }}
+          </button>
+          <button id="layersDelete" (click)="deleteData(retrieveData.key)">
+            Delete
+          </button>
+          <button id="fileDownload" (click)="downloadFile(retrieveData.key)">
+            Download
+          </button>
+          <button id="flyTo" (click)="flyTo(retrieveData)">
+            Go to layer
+          </button>
+        </div>
       </div>
-    </div>
-    <a routerLink="/upload">Upload Layers</a>
+      <a routerLink="/upload">Upload Layers</a>
+    </nav>
+  </div>
+  <nav class="topnav">
+    <a (click)="openNav()">
+      <svg width="30" height="30" id="icoOpen">
+        <path d="M0,5 30,5" stroke="#ddd" stroke-width="5" />
+        <path d="M0,14 30,14" stroke="#ddd" stroke-width="5" />
+        <path d="M0,23 30,23" stroke="#ddd" stroke-width="5" />
+      </svg>
+    </a>
   </nav>
   <div class="map" id="map" class="match-parent"></div>
 </div>
