@@ -5,3 +5,7 @@ body {
   height: auto;
   background-color: gray;
 }
+
+.mapbox-directions-instructions {
+  overflow-x: hidden;
+}

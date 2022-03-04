@@ -4,7 +4,7 @@ import * as mapboxgl from 'mapbox-gl';
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import MapboxTraffic from '@mapbox/mapbox-gl-traffic';
 import { GeojsonService } from '../services/geojson.service';
-import { map } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
@@ -25,7 +25,9 @@ export class MapComponent implements OnInit {
   retrievedData: any;
   toggleableLayerIds = new Array;
   selectedTasks = {};
-  constructor(private db: AngularFireDatabase, private geoJsonService: GeojsonService) { }
+
+  constructor(private db: AngularFireDatabase, private geoJsonService: GeojsonService) {
+  }
 
   ngOnInit() {
     this.buildMap();
@@ -64,6 +66,9 @@ export class MapComponent implements OnInit {
     geolocate.on('geolocate', success);
     this.map.on('load', () => {
       this.retrieveData();
+    });
+    directions.on('route', () => {
+      this.directionToggle();
     });
   }
 
@@ -178,6 +183,23 @@ export class MapComponent implements OnInit {
 
   closeNav() {
     document.getElementById("sideNavigation").style.width = "0";
+  }
+
+  directionToggle() {
+    var toggleElement = document.createElement("Button");
+    toggleElement.innerHTML = "Toggle Directions";
+    toggleElement.style.backgroundColor="#fff";
+    toggleElement.onclick = function () {
+      document.querySelector('.mapbox-directions-instructions').id = 'mapbox-directions-instructions';
+      let directionValue: string = document.getElementById("mapbox-directions-instructions").style.display;
+      if (directionValue !== "none") {
+        document.getElementById("mapbox-directions-instructions").style.display = "none";
+      } else {
+        document.getElementById("mapbox-directions-instructions").style.display = "block";
+      };
+    };
+    document.querySelector('.mapbox-directions-route-summary').id = 'mapbox-directions-route-summary';
+    document.getElementById('mapbox-directions-route-summary').appendChild(toggleElement)
   }
 
   downloadFile(key) {
