@@ -1,0 +1,11 @@
+{
+	"appId": "com.example.safmumapboxapp",
+	"appName": "mapboxdemo",
+	"webDir": "dist/mapboxdemo",
+	"bundledWebRuntime": false,
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 0
+		}
+	}
+}
