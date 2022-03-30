@@ -2,12 +2,12 @@
   "name": "mapboxdemo",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "ng": "SET NODE_OPTIONS=--openssl-legacy-provider && ng",
+    "start": "SET NODE_OPTIONS=--openssl-legacy-provider && ng serve",
+    "build": "SET NODE_OPTIONS=--openssl-legacy-provider && ng build",
+    "test": "SET NODE_OPTIONS=--openssl-legacy-provider && ng test",
+    "lint": "SET NODE_OPTIONS=--openssl-legacy-provider && ng lint",
+    "e2e": "SET NODE_OPTIONS=--openssl-legacy-provider && ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +23,8 @@
     "@capacitor/android": "^3.4.3",
     "@capacitor/angular": "^2.0.3",
     "@capacitor/core": "latest",
+    "@capacitor/geolocation": "^1.3.1",
+    "@capacitor/motion": "^1.0.5",
     "@mapbox/mapbox-gl-directions": "^4.1.0",
     "@mapbox/mapbox-gl-traffic": "^1.0.2",
     "@types/mapbox-gl": "^2.4.2",
