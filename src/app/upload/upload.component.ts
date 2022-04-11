@@ -24,7 +24,7 @@ export class UploadComponent implements OnInit {
   }
 
   mapPage() {
-    this.router.navigate(['/map'])
+    this.router.navigate(['/index'])
       .then(() => {
         window.location.reload();
       });

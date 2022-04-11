@@ -5,9 +5,9 @@ import { MapComponent } from './map/map.component';
 import { UploadComponent } from './upload/upload.component';
 
 const routes: Routes = [
-  { path: 'map', component: MapComponent },
+  { path: 'index', component: MapComponent },
   { path: 'upload', component: UploadComponent },
-  { path: '', redirectTo: '/map', pathMatch: 'full' },
+  { path: '', redirectTo: '/index', pathMatch: 'full' },
 ];
 
 
